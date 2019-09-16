@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+		
+		<!-- Webpage Title -->
+    <title>Hello, world!</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		
+		<!-- JS -->		<!-- js를 가져다 쓰려고 전부 링크들을 걸음 -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+
+     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <style type="text/css">
+      body{
+        /*margin: 0 20% 0 20%;*/
+        margin: 0 auto;
+        width: 1080px;
+        /*중앙 정렬 방식은 크게 2가지가 있다. 첫번째는 퍼센트로 하는 방법, 두번째로는 가로를 정해놓고 마진을 오토로주어 알아서 브라우저가 설정을 하게 하는방법이 있다.*/
+      }
+
+      .row{
+        margin-bottom: 15px;
+      }
+      /*.card-text .card-title {
+        font-family: serif;
+      }*/
+
+      * {
+        font-family: 'Stylish', sans-serif;
+      }
+
+      .block-form{
+        width: 480px;
+        margin: 30px auto 30px auto;
+        border : 2px solid;
+        padding: 10px
+      }
+
+      #posting-box {
+        display: none;
+      }
+    </style>
+
+    <script type="text/javascript">
+      function buttonOnClick() {
+        if($('#posting-box').css('display') == 'none'){
+          $('#posting-box').show();
+          $('.btn-lg').text('포스팅 박스 닫기');
+        } else{
+          $('#posting-box').hide();
+          $('.btn-lg').text('포스팅 박스 열기');
+        }
+      }
+
+      function openClose(){
+        if($('#posting-box').css('display') == 'block'){
+          $('#posting-box').hide();
+          $('.btn-lg').text('포스팅 박스 열기');
+        } else {
+          $('#posting-box').show();
+          $('.btn-lg').text('포스팅 박스 닫기');
+        }
+      }
+    </script>
+
+  </head>
+  <body>
+  <div class="jumbotron">
+    <h1 class="display-4">나만의 링크 메모장</h1>
+    <p class="lead">여기 부분에 부제이 들어 갑니다.</p>
+    <hr class="my-4">
+    <p>여기 부분에는 본문이 들어갑니다.</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button" onclick="openClose()">포스팅 박스 열기</a>
+  </div>
+
+
+  <form class="block-form" id="posting-box">
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Article URL</label>
+      <input type="email" class="form-control" id="posting-url">
+    </div>
+  
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Simple Comment</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="posting()">기사저장</button>
+  </form>
+
+
+
+<div class="container" id="cards-box">
+  <div class="row">
+    <div class="col-sm">
+      <div class="card" style="width: 18rem;">
+        <img src="https://cdn.pixabay.com/photo/2019/07/15/13/44/architecture-4339428_1280.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">제목이 들어가는 부분입니다.</h5>
+            <p class="card-text">본문이 들어가는 부분입니다.</p>
+            <a href="#" class="btn btn-primary">링크, 또는 코멘트가 들어가는 부분입니다.</a>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-sm">
+      <div class="card" style="width: 18rem;">
+        <img src="https://cdn.pixabay.com/photo/2019/07/15/13/44/architecture-4339428_1280.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">제목이 들어가는 부분입니다.</h5>
+            <p class="card-text">본문이 들어가는 부분입니다.</p>
+            <a href="#" class="btn btn-primary">링크, 또는 코멘트가 들어가는 부분입니다.</a>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm">
+      <div class="card" style="width: 18rem;">
+        <img src="https://cdn.pixabay.com/photo/2019/07/15/13/44/architecture-4339428_1280.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">제목이 들어가는 부분입니다.</h5>
+            <p class="card-text">본문이 들어가는 부분입니다.</p>
+            <a href="#" class="btn btn-primary">링크, 또는 코멘트가 들어가는 부분입니다.</a>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="card" style="width: 18rem;">
+        <img src="https://cdn.pixabay.com/photo/2019/07/15/13/44/architecture-4339428_1280.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">제목이 들어가는 부분입니다.</h5>
+            <p class="card-text">본문이 들어가는 부분입니다.</p>
+            <a href="#" class="btn btn-primary">링크, 또는 코멘트가 들어가는 부분입니다.</a>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm">
+      <div class="card" style="width: 18rem;">
+        <img src="https://cdn.pixabay.com/photo/2019/07/15/13/44/architecture-4339428_1280.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">제목이 들어가는 부분입니다.</h5>
+            <p class="card-text">본문이 들어가는 부분입니다.</p>
+            <a href="#" class="btn btn-primary">링크, 또는 코멘트가 들어가는 부분입니다.</a>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm">
+      <div class="card" style="width: 18rem;">
+        <img src="https://cdn.pixabay.com/photo/2019/07/15/13/44/architecture-4339428_1280.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">제목이 들어가는 부분입니다.</h5>
+            <p class="card-text">본문이 들어가는 부분입니다.</p>
+            <a href="#" class="btn btn-primary">링크, 또는 코멘트가 들어가는 부분입니다.</a>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+  </body>
+</html>
