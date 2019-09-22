@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!-- JS -->   <!-- js를 가져다 쓰려고 전부 링크들을 걸음 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+
+     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
 
     <title>Hello, world!</title>
 
@@ -30,8 +38,91 @@
       #itemInfo{
         padding: 15px;
       }
+
+      #order-table{
+        margin-top: 50px;
+      }
     </style>
+    
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        $('#order-table').html('');
+        listing();
+      })
+
+      function listing(){
+        let item = 'MacBook';
+        $.ajax({
+          type:'GET',
+          url:'http://spartacodingclub.shop/order?item_give='+item,
+          data:{},
+          success:function(response){
+            let orders = response['orders'];
+            let temp_html = '<thead>\
+                              <tr>\
+                                <th scope="col">index</th>\
+                                <th scope="col">상품명</th>\
+                                <th scope="col">이름</th>\
+                                <th scope="col">수량</th>\
+                                <th scope="col">주소</th>\
+                                <th scope="col">전화번호</th>\
+                              </tr>\
+                            </thead>\
+                            <tbody>';
+            $('#order-table').append(temp_html);
+            for(let i=0;i<orders.length;i++){
+              console.log(orders[i]);
+              makeOrderItem(i, orders[i]['item'], orders[i]['name'], orders[i]['count'], orders[i]['address'], orders[i]['phone']);
+            }
+            $('#order-table').append('</tbody>')
+          }
+        })
+      }
+
+      function makeOrderItem(i, item, name, count, address, phone){
+
+        let temp_item_html = '<tr>\
+                                <th scope="row">'+i+'</th>\
+                                <td>'+item+'</td>\
+                                <td>'+name+'</td>\
+                                <td>'+count+'</td>\
+                                <td>'+address+'</td>\
+                                <td>'+phone+'</td>\
+                              </tr>';
+
+        $('#order-table').append(temp_item_html);
+
+
+      }
+
+      function ordering(){
+        let name = $('#user-name').val();
+        let count = $('#user-count').val();
+        let address = $('#user-address').val();
+        let phone = $('#user-phone').val();
+        let item = 'MacBook';
+        $.ajax({
+          type:"POST",
+          url:"http://spartacodingclub.shop/order",
+          data: {name_give:name, count_give:count, address_give:address, phone_give:phone, item_give:item},
+          success: function(response){
+            console.log(response);
+            if(response['result'] == 'success'){
+              console.log('ordering success');
+              window.location.reload();
+            } else{
+              console.log('ordering fail');
+            }
+          }
+        })
+
+      }
+
+    </script>
+
   </head>
+
   <body>
     <div class="wrap">
       <div class="item">
@@ -44,7 +135,7 @@
     <div class="container"> 
       <!-- Columns are always 50% wide, on mobile and desktop -->
       <div class="row">
-        <div class="col-6"> <h3 id="itemTitle">상품제목</h3></div>
+        <div class="col-6"> <h3 id="itemTitle">MacBook</h3></div>
         <div class="col-6"> <strong>가격:3,500,000 / 개</strong></div>
         <p id="itemInfo"> <strong>Processor</strong>
           More power at its cores.
@@ -56,14 +147,14 @@
         <div class="form-group row">
           <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">주문자 성함</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="홍길동">
+            <input type="text" class="form-control form-control-sm" id="user-name" placeholder="홍길동">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">수량</label>
           <div class="col-sm-10">
-            <select class="form-control" id="exampleFormControlSelect1">
+            <select class="form-control" id="user-count">
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -76,26 +167,58 @@
         <div class="form-group row">
           <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">주소</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="도로명주소">
+            <input type="text" class="form-control form-control-sm" id="user-address" placeholder="도로명주소">
           </div>
         </div>
 
         <div class="form-group row">
           <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">전화번호</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="000-0000-0000">
+            <input type="text" class="form-control form-control-sm" id="user-phone" placeholder="000-0000-0000">
           </div>
         </div>
              
       </form>
-      <button type="button" class="btn btn-secondary btn-lg btn-block">주문하기</button>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="ordering()">주문하기</button>
 
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <div class='wrap'>
+      <table class="table" id="order-table">
+        <thead>
+          <tr>
+            <th scope="col">상품명</th>
+            <th scope="col">이름</th>
+            <th scope="col">수량</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    
   </body>
 </html>

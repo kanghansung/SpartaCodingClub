@@ -52,6 +52,12 @@
     </style>
 
     <script type="text/javascript">
+
+      $(document).ready(function(){
+        $('#cards-box').html('');
+        listing();
+      })
+
       function buttonOnClick() {
         if($('#posting-box').css('display') == 'none'){
           $('#posting-box').show();
@@ -65,11 +71,61 @@
       function openClose(){
         if($('#posting-box').css('display') == 'block'){
           $('#posting-box').hide();
-          $('.btn-lg').text('포스팅 박스 열기');
+          $('.btn-lg').text('포스팅 박스 열기!');
         } else {
           $('#posting-box').show();
           $('.btn-lg').text('포스팅 박스 닫기');
         }
+      }
+
+      function posting(){
+        let url = $('#posting-url').val();
+        let comment = $('#posting-comment').val();
+        let author = '강한성';
+
+        // 우리가 크롬 콘솔창에서 썼던 그 코드!
+        $.ajax({
+          type: "POST", // POST 방식으로 요청하겠다.
+          url: "http://spartacodingclub.shop/post", // /post라는 url에 요청하겠다.
+          data: { url_give: url, comment_give: comment, author_give:author }, // 데이터를 주는 방법
+          success: function(response){ // 성공하면 콘솔 창에 결과를 찍어주자
+            if(response['result'] == 'success'){
+              alert('posting success');
+              window.location.reload()    //화면 갱신
+            } else{
+
+            }
+          }
+        })
+      }
+
+      function make_card(url, comment, title, image, desc){
+        let temp_html = '<div class="card" style="width: 18rem;">\
+        <img src="'+image+'" class="card-img-top" alt="...">\
+          <div class="card-body">\
+            <a herf='+url+' class="card-title" target="_blank">'+title+'</a>\
+            <p class="card-text">'+desc+'</p>\
+            <a href="#" class="btn btn-primary">'+comment+'</a>\
+          </div>\
+        </div>';
+
+        $('#cards-box').append(temp_html);
+      }
+
+      function listing(){
+        $.ajax({
+          type: "GET",
+          url: "http://spartacodingclub.shop/post?author_give=강한성",
+          data: {},
+          success: function(response){
+            if(response['result'] == 'success'){
+              let articles = response['articles'];
+              for(let i=0;i<articles.length;i++){
+                make_card(articles[i]['url'], articles[i]['comment'], articles[i]['title'], articles[i]['image'], articles[i]['desc']);
+              }
+            }
+          }
+        })
       }
     </script>
 
@@ -92,7 +148,7 @@
   
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Simple Comment</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <textarea class="form-control" id="posting-comment" rows="3"></textarea>
     </div>
     <button type="button" class="btn btn-primary" onclick="posting()">기사저장</button>
   </form>
