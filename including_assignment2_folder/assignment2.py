@@ -13,20 +13,20 @@ soup = BeautifulSoup(data.text, 'html.parser')
 songList = soup.select('a.title.ellipsis')
 singerList = soup.select('a.artist.ellipsis')
 
-# count = 0
-# for song in songList:
-#     singer = singerList[count].text
-#     count += 1
-#     doc = {
-#         'rank':count,
-#         'title':song.text,
-#         'singer':singer
-#     }
-#
-#     db.songs.insert_one(doc)
-#     print('insert ==>',count)
+count = 0
+for song in songList:
+    singer = singerList[count].text
+    count += 1
+    doc = {
+        'rank':count,
+        'title':song.text,
+        'singer':singer
+    }
+
+    db.songs.insert_one(doc)
+    print('insert ==>',count)
 
 dataList = list(db.songs.find())
 for data in dataList:
-    print('rank:',data['rank'],' title:',data['title'],' singer:',data['singer'])
+    print('rank:',data['rank'],'title:',data['title'],'singer:',data['singer'])
 

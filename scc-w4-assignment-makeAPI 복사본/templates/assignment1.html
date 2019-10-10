@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- JS -->   <!-- js를 가져다 쓰려고 전부 링크들을 걸음 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+     <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <title>Hello, world!</title>
+
+    <style type="text/css">
+      .wrap{
+        width: 960px;
+        margin: 0 auto;
+        background: #F2F2F2;
+        text-align: center;
+      }
+      #item{
+        width: 720px;
+        height: 480px;
+      }
+      .container {
+        width: 960px;
+        background: #F2F2F2;
+        padding-top: 50px;
+        padding-bottom: : 100px;
+      }
+      #itemInfo{
+        padding: 15px;
+      }
+
+      #order-table{
+        margin-top: 50px;
+      }
+    </style>
+
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        $('#order-table').html('');
+        listing();
+      })
+
+      function listing(){
+        let item = 'MacBook';
+        $.ajax({
+          type:'GET',
+          url:'/listingOrder?item='+item,
+          data:{},
+          success:function(response){
+            let orders = response['orders'];
+            let temp_html = '<thead>\
+                              <tr>\
+                                <th scope="col">index</th>\
+                                <th scope="col">상품명</th>\
+                                <th scope="col">이름</th>\
+                                <th scope="col">수량</th>\
+                                <th scope="col">주소</th>\
+                                <th scope="col">전화번호</th>\
+                              </tr>\
+                            </thead>\
+                            <tbody>';
+            $('#order-table').append(temp_html);
+            for(let i=0;i<orders.length;i++){
+              console.log(orders[i]);
+              makeOrderItem(i, orders[i]['item'], orders[i]['name'], orders[i]['count'], orders[i]['address'], orders[i]['phone']);
+            }
+            $('#order-table').append('</tbody>')
+          }
+        })
+      }
+
+      function makeOrderItem(i, item, name, count, address, phone){
+
+        let temp_item_html = '<tr>\
+                                <th scope="row">'+i+'</th>\
+                                <td>'+item+'</td>\
+                                <td>'+name+'</td>\
+                                <td>'+count+'</td>\
+                                <td>'+address+'</td>\
+                                <td>'+phone+'</td>\
+                              </tr>';
+
+        $('#order-table').append(temp_item_html);
+
+
+      }
+
+      function ordering(){
+        let name = $('#user-name').val();
+        let count = $('#user-count').val();
+        let address = $('#user-address').val();
+        let phone = $('#user-phone').val();
+        let item = 'MacBook';
+        $.ajax({
+          type:"POST",
+          url:"/postingOrder",
+          data: {name_give:name, count_give:count, address_give:address, phone_give:phone, item_give:item},
+          success: function(response){
+            console.log(response);
+            if(response['result'] == 'success'){
+              console.log('ordering success');
+              window.location.reload();
+            } else{
+              console.log('ordering fail');
+            }
+          }
+        })
+
+      }
+
+    </script>
+
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="item">
+        <img src="http://img.danawa.com/cp_images/service/149/3612221/b92ac4ba.jpg" id="item">
+      </div>
+
+
+    </div>
+
+    <div class="container">
+      <!-- Columns are always 50% wide, on mobile and desktop -->
+      <div class="row">
+        <div class="col-6"> <h3 id="itemTitle">MacBook</h3></div>
+        <div class="col-6"> <strong>가격:3,500,000 / 개</strong></div>
+        <p id="itemInfo"> <strong>Processor</strong>
+          More power at its cores.
+          With the latest Intel Core processors, MacBook Pro reaches new heights in compute performance. The 15‑inch model now features a ninth-generation 8-core Intel Core i9 processor that reaches Turbo Boost speeds up to 5.0GHz. This gives 3D graphics apps like Autodesk Maya up to 40 percent faster render speeds compared with the previous-generation 6-core processor and up to 2x faster render speeds than a quad-core processor.2 And a new eighth-generation quad‑core processor on the 13‑inch MacBook Pro makes it ready to take on even the toughest tasks. So when you’re powering through pro‑level processing jobs like compiling code, rendering 3D models, adding special effects, layering multiple tracks, or encoding video, you’ll get everything done. Faster.
+        </p>
+      </div>
+
+      <form>
+        <div class="form-group row">
+          <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">주문자 성함</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control form-control-sm" id="user-name" placeholder="홍길동">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">수량</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="user-count">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">주소</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control form-control-sm" id="user-address" placeholder="도로명주소">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">전화번호</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control form-control-sm" id="user-phone" placeholder="000-0000-0000">
+          </div>
+        </div>
+
+      </form>
+      <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="ordering()">주문하기</button>
+
+    </div>
+
+    <div class='wrap'>
+      <table class="table" id="order-table">
+        <thead>
+          <tr>
+            <th scope="col">상품명</th>
+            <th scope="col">이름</th>
+            <th scope="col">수량</th>
+            <th scope="col">주소</th>
+            <th scope="col">전화번호</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </body>
+</html>
