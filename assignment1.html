@@ -55,7 +55,7 @@
         let item = 'MacBook';
         $.ajax({
           type:'GET',
-          url:'http://spartacodingclub.shop/order?item_give='+item,
+          url:'/listingOrder?item='+item,
           data:{},
           success:function(response){
             let orders = response['orders'];
@@ -104,7 +104,7 @@
         let item = 'MacBook';
         $.ajax({
           type:"POST",
-          url:"http://spartacodingclub.shop/order",
+          url:"/postingOrder",
           data: {name_give:name, count_give:count, address_give:address, phone_give:phone, item_give:item},
           success: function(response){
             console.log(response);
